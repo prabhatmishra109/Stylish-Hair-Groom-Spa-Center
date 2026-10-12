@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aura Studio | Book your salon and skin clinic visit online</title>
+  <meta name="description" content="Choose a service, pick a date and time, and send your booking straight to WhatsApp. No sign-up, no waiting on hold.">
+  <meta name="theme-color" content="#0E5A55">
+
+  <!-- Apply saved theme before paint to avoid a flash -->
+  <script>
+    try {
+      var t = localStorage.getItem("aura_theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-bs-theme", t);
+    } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/animations.css" rel="stylesheet">
+  <noscript><style>.reveal{opacity:1!important;transform:none!important}.hero-title .line>span{transform:none!important}</style></noscript>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-root-margin="-90px 0px -60% 0px" tabindex="0">
+
+  <a class="skip-link" href="#book">Skip to booking</a>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar navbar-expand-lg fixed-top site-nav" id="siteNav">
+    <div class="container">
+      <a class="navbar-brand brand" href="#top" aria-label="Home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="32" height="32"><circle cx="16" cy="16" r="15" fill="currentColor"/><path d="M9 21c2-9 5-12 7-12s5 3 7 12M12.5 17h7" fill="none" stroke="var(--on-brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="brand-text"><strong data-bind="name">Aura Studio</strong><small data-bind="tagline">Salon &amp; Skin Clinic</small></span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="bi bi-list"></i>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav mx-auto mb-3 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#how">How it works</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li>
+          <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="btn btn-icon" id="themeToggle" type="button" aria-label="Switch to dark theme">
+            <i class="bi bi-moon-stars" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-ghost btn-sm position-relative" type="button" data-bs-toggle="modal" data-bs-target="#bookingsModal">
+            <i class="bi bi-journal-check" aria-hidden="true"></i>
+            <span class="ms-1">My bookings</span>
+            <span class="count-badge" id="bookingsBadge" hidden>0</span>
+          </button>
+          <a class="btn btn-brand btn-sm" href="#book">Book now</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO + BOOKING WIZARD ============ -->
+  <header class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true">
+      <span class="blob blob-1"></span>
+      <span class="blob blob-2"></span>
+      <span class="blob blob-3"></span>
+      <span class="dots"></span>
+    </div>
+
+    <div class="container position-relative">
+      <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-lg-6">
+          <p class="hero-badge"><span class="live-dot" aria-hidden="true"></span>Taking bookings for the next two weeks</p>
+          <h1 class="hero-title">
+            <span class="line"><span>Book your visit</span></span>
+            <span class="line"><span>in under a minute.</span></span>
+          </h1>
+          <p class="hero-lead">Choose a service, pick a time that suits you, and your booking lands in our WhatsApp, pre-filled and ready. No sign-up, no waiting on hold.</p>
+          <div class="hero-actions">
+            <a href="#book" class="btn btn-brand btn-lg">Pick a slot</a>
+            <a href="#services" class="btn btn-ghost btn-lg">See services</a>
+          </div>
+          <ul class="hero-points">
+            <li><i class="bi bi-whatsapp" aria-hidden="true"></i>Your booking opens in WhatsApp, already written</li>
+            <li><i class="bi bi-calendar-check" aria-hidden="true"></i>Add the slot to your phone calendar</li>
+            <li><i class="bi bi-wallet2" aria-hidden="true"></i>Pay at the studio, nothing online</li>
+          </ul>
+        </div>
+
+        <div class="col-lg-6">
+          <section class="wizard" id="book" aria-labelledby="wizardTitle">
+            <div class="wizard-head">
+              <h2 class="wizard-title" id="wizardTitle">Book an appointment</h2>
+              <p class="wizard-sub" id="stepLabel">Step 1 of 4: Choose a service</p>
+            </div>
+
+            <ol class="stepper" id="stepper" aria-label="Booking progress">
+              <li data-step="1"><span class="dot">1</span><span class="step-name">Service</span></li>
+              <li data-step="2"><span class="dot">2</span><span class="step-name">Time</span></li>
+              <li data-step="3"><span class="dot">3</span><span class="step-name">Details</span></li>
+              <li data-step="4"><span class="dot">4</span><span class="step-name">Confirm</span></li>
+            </ol>
+
+            <div class="selection" id="selection" hidden aria-live="polite"></div>
+
+            <div class="wizard-body">
+              <!-- Step 1 -->
+              <div class="step-pane" data-step="1">
+                <div class="service-grid" id="serviceList" role="radiogroup" aria-label="Choose a service"></div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="step-pane" data-step="2" hidden>
+                <h3 class="pane-title">Pick a date</h3>
+                <div class="date-strip" id="dateStrip" role="group" aria-label="Available dates"></div>
+                <h3 class="pane-title mt-4">Pick a time</h3>
+                <div id="slotWrap" aria-live="polite"></div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="step-pane" data-step="3" hidden>
+                <form id="detailsForm" novalidate>
+                  <div class="mb-3">
+                    <label class="form-label" for="fName">Full name</label>
+                    <input type="text" class="form-control" id="fName" autocomplete="name" placeholder="e.g. Rahul Sharma" required>
+                    <div class="invalid-feedback">Enter your name (at least 2 letters).</div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label" for="fPhone">Mobile number</label>
+                    <div class="input-group has-validation">
+                      <span class="input-group-text">+91</span>
+                      <input type="tel" class="form-control" id="fPhone" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit number" required>
+                      <div class="invalid-feedback">Enter a valid 10-digit Indian mobile number.</div>
+                    </div>
+                  </div>
+                  <div class="mb-1">
+                    <label class="form-label" for="fNote">Anything we should know? <span class="optional">(optional)</span></label>
+                    <textarea class="form-control" id="fNote" rows="2" maxlength="160" placeholder="Allergies, preferred stylist, special occasion"></textarea>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="step-pane" data-step="4" hidden>
+                <dl class="review" id="reviewList"></dl>
+                <div class="send-actions">
+                  <button type="button" class="btn btn-wa btn-lg" id="sendWhatsApp"><i class="bi bi-whatsapp" aria-hidden="true"></i> Send on WhatsApp</button>
+                  <button type="button" class="btn btn-ghost btn-lg" id="sendEmail"><i class="bi bi-envelope" aria-hidden="true"></i> Send by email</button>
+                </div>
+                <p class="fine-print">Your message opens pre-filled. Press send in WhatsApp (or your mail app) to finish. We confirm your slot by reply.</p>
+              </div>
+
+              <!-- Success -->
+              <div class="step-pane success" data-step="done" hidden>
+                <div class="success-mark" aria-hidden="true">
+                  <svg viewBox="0 0 80 80" width="84" height="84">
+                    <circle class="sc" cx="40" cy="40" r="34" fill="none" stroke-width="5"/>
+                    <path class="sk" d="M25 41l11 11 20-23" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <h3 class="success-title">Booking ready to send</h3>
+                <p class="success-text" id="successText"></p>
+                <dl class="review review-compact" id="successSummary"></dl>
+                <div class="send-actions">
+                  <button type="button" class="btn btn-brand" id="btnIcs"><i class="bi bi-calendar-plus" aria-hidden="true"></i> Add to calendar</button>
+                  <button type="button" class="btn btn-ghost" id="btnAnother">Book another</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="wizard-foot" id="wizardFoot">
+              <button type="button" class="btn btn-link btn-back" id="btnBack"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back</button>
+              <button type="button" class="btn btn-brand" id="btnNext">Continue</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ MARQUEE ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+  <main>
+    <!-- ============ SERVICES ============ -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="section-title">Treatments, priced up front</h2>
+          <p class="section-lead">What you see is what you pay at the studio. Pick one and we will take you straight to the time picker.</p>
+        </div>
+        <div class="row g-4" id="servicesGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section section-alt" id="how">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="section-title">Three taps and you are booked</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4 reveal" style="--d:0ms">
+            <div class="how-card"><span class="how-num">1</span><h3>Choose what you need</h3><p>Browse services with durations and prices, then tap the one you want.</p></div>
+          </div>
+          <div class="col-md-4 reveal" style="--d:90ms">
+            <div class="how-card"><span class="how-num">2</span><h3>Pick a date and time</h3><p>Times that are taken or already passed are greyed out, so every slot you see is open.</p></div>
+          </div>
+          <div class="col-md-4 reveal" style="--d:180ms">
+            <div class="how-card"><span class="how-num">3</span><h3>Send it on WhatsApp</h3><p>Your details are written for you. Press send and wait for our confirmation reply.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STATS ============ -->
+    <section class="stats">
+      <div class="container">
+        <div class="row g-4 text-center">
+          <div class="col-6 col-md-3"><div class="stat"><span class="stat-num" data-count="2300" data-suffix="+">0</span><span class="stat-label">Visits since we opened</span></div></div>
+          <div class="col-6 col-md-3"><div class="stat"><span class="stat-num" data-count="4.9" data-decimals="1">0</span><span class="stat-label">Average rating</span></div></div>
+          <div class="col-6 col-md-3"><div class="stat"><span class="stat-num" data-count="8">0</span><span class="stat-label">Years of experience</span></div></div>
+          <div class="col-6 col-md-3"><div class="stat"><span class="stat-num" data-count="10" data-prefix="&lt;&nbsp;" data-suffix=" min">0</span><span class="stat-label">Typical reply time</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REVIEWS ============ -->
+    <section class="section" id="reviews">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2 class="section-title">What clients say</h2>
+        </div>
+        <div class="row g-4">
+          <div class="col-lg-4 reveal" style="--d:0ms">
+            <figure class="review-card">
+              <div class="stars" aria-label="5 out of 5 stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <blockquote>Booked at 11 pm, got a reply before breakfast. The hair spa was exactly what I needed.</blockquote>
+              <figcaption><span class="avatar">A</span><span><strong>Ananya S.</strong><small>Hair spa</small></span></figcaption>
+            </figure>
+          </div>
+          <div class="col-lg-4 reveal" style="--d:90ms">
+            <figure class="review-card">
+              <div class="stars" aria-label="5 out of 5 stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <blockquote>No calling around to find a free slot. I picked a time, pressed send, done.</blockquote>
+              <figcaption><span class="avatar">R</span><span><strong>Rohit K.</strong><small>Haircut and styling</small></span></figcaption>
+            </figure>
+          </div>
+          <div class="col-lg-4 reveal" style="--d:180ms">
+            <figure class="review-card">
+              <div class="stars" aria-label="5 out of 5 stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              <blockquote>The bridal trial left zero surprises for the wedding day. Prices matched what the site said.</blockquote>
+              <figcaption><span class="avatar">M</span><span><strong>Meera P.</strong><small>Bridal makeup trial</small></span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section section-alt" id="faq">
+      <div class="container">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-4 reveal">
+            <h2 class="section-title">Questions, answered</h2>
+            <p class="section-lead">Still unsure? Message us on WhatsApp and we will help.</p>
+          </div>
+          <div class="col-lg-8 reveal" style="--d:100ms">
+            <div class="accordion accordion-flush faq" id="faqAcc">
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true" aria-controls="q1">How does the booking work?</button></h3>
+                <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#faqAcc"><div class="accordion-body">Pick a service, date and time, then enter your name and number. We open WhatsApp with your booking written out. Once you press send, our team replies to confirm.</div></div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2" aria-expanded="false" aria-controls="q2">Do I pay online?</button></h3>
+                <div id="q2" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body">No. You pay at the studio after your service. The prices shown here are what you will be charged.</div></div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3" aria-expanded="false" aria-controls="q3">Can I cancel or change my time?</button></h3>
+                <div id="q3" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body">Yes. Open My bookings to cancel, then book a new slot. Please also message us on WhatsApp so we can free up the time for someone else.</div></div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q4" aria-expanded="false" aria-controls="q4">What if my time is not confirmed?</button></h3>
+                <div id="q4" class="accordion-collapse collapse" data-bs-parent="#faqAcc"><div class="accordion-body">Your booking is a request until we reply. If the slot clashes with another client, we will message you with the nearest open times.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ CONTACT / FOOTER ============ -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Ready for your next visit?</h2>
+          <p>Slots fill up fastest in the evenings and on Saturdays.</p>
+        </div>
+        <a href="#book" class="btn btn-accent btn-lg">Pick a slot</a>
+      </div>
+
+      <div class="row g-4 footer-grid">
+        <div class="col-lg-4">
+          <div class="brand brand-footer">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="32" height="32"><circle cx="16" cy="16" r="15" fill="currentColor"/><path d="M9 21c2-9 5-12 7-12s5 3 7 12M12.5 17h7" fill="none" stroke="var(--on-brand)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="brand-text"><strong data-bind="name">Aura Studio</strong><small data-bind="tagline">Salon &amp; Skin Clinic</small></span>
+          </div>
+          <p class="footer-about">Hair, skin and bridal care with clear prices and easy booking.</p>
+        </div>
+        <div class="col-6 col-lg-4">
+          <h3 class="footer-title">Visit or call</h3>
+          <ul class="footer-list">
+            <li><i class="bi bi-geo-alt" aria-hidden="true"></i><span data-bind="address"></span></li>
+            <li><i class="bi bi-telephone" aria-hidden="true"></i><a data-bind="phoneLink" href="#"></a></li>
+            <li><i class="bi bi-envelope" aria-hidden="true"></i><a data-bind="emailLink" href="#"></a></li>
+          </ul>
+        </div>
+        <div class="col-6 col-lg-4">
+          <h3 class="footer-title">Opening hours</h3>
+          <ul class="footer-list">
+            <li><i class="bi bi-clock" aria-hidden="true"></i><span data-bind="hours"></span></li>
+            <li><i class="bi bi-calendar-x" aria-hidden="true"></i><span data-bind="closed"></span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="copyright">&copy; <span id="year"></span> <span data-bind="name">Hair Spa Center</span>. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a class="wa-float" id="waFloat" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <i class="bi bi-whatsapp" aria-hidden="true"></i>
+  </a>
+
+  <!-- My bookings modal -->
+  <div class="modal fade" id="bookingsModal" tabindex="-1" aria-labelledby="bookingsTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title fs-5" id="bookingsTitle">My bookings</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="bookingsList"></div>
+        <div class="modal-footer"><small class="me-auto muted">Saved on this device only.</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" id="toastStack"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/booking.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+/* ==========================================================
+   animations.css: all motion in one place
+   The one orchestrated moment is the hero headline reveal.
+   Everything else responds to a user action or scroll.
+   ========================================================== */
+
+/* ---------- Hero headline: lines rise out of a mask ---------- */
+@keyframes lineUp {
+  from { transform: translateY(108%); }
+  to   { transform: translateY(0); }
+}
+.hero-title .line > span {
+  transform: translateY(108%);
+  animation: lineUp 1s var(--ease) forwards;
+}
+.hero-title .line:nth-child(1) > span { animation-delay: .1s; }
+.hero-title .line:nth-child(2) > span { animation-delay: .24s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.hero-badge, .hero-lead, .hero-actions, .hero-points, .wizard {
+  opacity: 0;
+  animation: fadeUp .9s var(--ease) forwards;
+}
+.hero-badge   { animation-delay: .05s; }
+.hero-lead    { animation-delay: .45s; }
+.hero-actions { animation-delay: .55s; }
+.hero-points  { animation-delay: .65s; }
+.wizard       { animation-delay: .4s; }
+
+/* ---------- Background blobs drift slowly ---------- */
+@keyframes drift1 { 0%, 100% { transform: translate(0, 0) scale(1); }    50% { transform: translate(60px, 40px) scale(1.08); } }
+@keyframes drift2 { 0%, 100% { transform: translate(0, 0) scale(1); }    50% { transform: translate(-50px, 50px) scale(1.12); } }
+@keyframes drift3 { 0%, 100% { transform: translate(0, 0) scale(1); }    50% { transform: translate(40px, -50px) scale(.94); } }
+.blob-1 { animation: drift1 16s ease-in-out infinite; }
+.blob-2 { animation: drift2 19s ease-in-out infinite; }
+.blob-3 { animation: drift3 22s ease-in-out infinite; }
+
+/* ---------- Live dot + WhatsApp pulse ---------- */
+@keyframes ping {
+  0%   { transform: scale(1);   opacity: .7; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+.live-dot::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--wa);
+  animation: ping 1.8s ease-out infinite;
+}
+.wa-float::before {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--wa);
+  z-index: -1; animation: ping 2.4s ease-out infinite;
+}
+
+/* ---------- Marquee ---------- */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 32s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------- Wizard step transitions ---------- */
+@keyframes stepFwd  { from { opacity: 0; transform: translateX(26px); }  to { opacity: 1; transform: none; } }
+@keyframes stepBack { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
+.step-pane.enter-fwd  { animation: stepFwd .45s var(--ease) both; }
+.step-pane.enter-back { animation: stepBack .45s var(--ease) both; }
+
+/* slot and date feedback */
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(.92); }
+  100% { transform: scale(1); }
+}
+.slot.is-selected, .date-chip[aria-pressed="true"] { animation: pop .35s var(--ease); }
+
+@keyframes chipIn {
+  from { opacity: 0; transform: translateY(6px) scale(.95); }
+  to   { opacity: 1; transform: none; }
+}
+.chip { animation: chipIn .35s var(--ease) both; }
+
+/* slot list fades in when the day changes */
+.slot-group { animation: fadeUp .5s var(--ease) both; }
+.slot-group:nth-child(2) { animation-delay: .06s; }
+.slot-group:nth-child(3) { animation-delay: .12s; }
+
+/* ---------- Success: drawn circle + check, confetti ---------- */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.success-mark .sc { stroke-dasharray: 214; stroke-dashoffset: 214; animation: draw .7s .1s var(--ease) forwards; }
+.success-mark .sk { stroke-dasharray: 60;  stroke-dashoffset: 60;  animation: draw .5s .65s var(--ease) forwards; }
+
+@keyframes burst {
+  0%   { transform: translate(0, 0) rotate(0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(.4); opacity: 0; }
+}
+.confetti {
+  position: absolute; left: 50%; top: 50%; width: 8px; height: 12px; border-radius: 2px;
+  pointer-events: none; animation: burst 1.2s .55s cubic-bezier(.2, .7, .3, 1) forwards; opacity: 0;
+}
+
+/* ---------- Count badge pop ---------- */
+@keyframes badgePop { 0% { transform: scale(0); } 70% { transform: scale(1.25); } 100% { transform: scale(1); } }
+.count-badge:not([hidden]) { animation: badgePop .4s var(--ease); }
+
+/* ---------- Respect reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: .001ms !important;
+    transition-delay: 0ms !important;
+  }
+  .hero-title .line > span { transform: none; }
+  .hero-badge, .hero-lead, .hero-actions, .hero-points, .wizard { opacity: 1; }
+  .reveal { opacity: 1; transform: none; }
+  .marquee-track { animation: none; }
+  .success-mark .sc, .success-mark .sk { stroke-dashoffset: 0; }
+}
